@@ -1,0 +1,9 @@
+
+Results on ma 100/10 network at home
+
+
+-- Results in seconds --
+Sequential upload: 0.48871, 0.502901, 0.445046, 0.885362, 1.084225 mean = 0.6812488
+Sequential download: 0.25169, 0.312967, 0.332202, 0.185333, 0.248775 mean = 0.2661934
+Parallel upload: 0.671889, 0.458272, 0.557237, 0.557978, 0.623215 mean = 0.5737182
+Parallel download: 0.256235, 0.257241, 0.255444, 0.265385, 0.325992 mean = 0.2720594
