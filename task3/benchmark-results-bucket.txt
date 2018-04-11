@@ -1,0 +1,13 @@
+writing:
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.216114 s, 4.9 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.264296 s, 4.0 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.221812 s, 4.7 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.425245 s, 2.5 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.496324 s, 2.1 MB/s
+
+reading:
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.26702 s, 3.9 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0482692 s, 21.7 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.123146 s, 8.5 MB/
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0552787 s, 19.0 MB/s
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.077919 s, 13.5 MB/s
