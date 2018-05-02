@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# this script will benchmark reading and writing the cloud storage
+# this script will benchmark reading and writing the Google cloud storage
 #
 # benchmarking is done as follows:
-# 1 mb file is sequentially uploaded to cloud 5 times
-# 1 mb file is sequentially downloaded from cloud 5 times
-# 256 kb file is parallelly uploaded to cloud by 4 threads 5 times
-# 256 kb file is parallelly downloaded from cloud by 4 threads 5 times
+# 100 MB file is sequentially uploaded to cloud 5 times
+# 100 MB file is sequentially downloaded from cloud 5 times
+# 25 MB file is parallelly uploaded to cloud by 4 threads 5 times
+# 25 MB file is parallelly downloaded from cloud by 4 threads 5 times
 #
 # the elapsed durations are measured for each 'time' 
-# the measurements thus correspond to the duration of moving a total of 1mb of data
+# the measurements thus correspond to the duration of moving a total of 100 MB of data
 
 
 import threading
@@ -45,7 +45,7 @@ print("Doing sequential uploads")
 for i in range(5):
     print("{}...".format(i))
     a = datetime.datetime.now()
-    do_upload(bucket, i, "1mb-file") # do the thing
+    do_upload(bucket, i, "100MB-file") # do the thing
     b = datetime.datetime.now()
     sequential_upload.append(b-a) # append elapsed time to list
 
@@ -64,7 +64,7 @@ for i in range(5):
     bucket.get_blob('benchmark-{}'.format(i)).delete()
     os.remove('benchmark-{}'.format(i))
 
-# do parallel upload (4 threads parallelly upload 256kb, 5 times)
+# do parallel upload (4 threads parallelly upload 25MB, 5 times)
 print("Doing parallel uploads")
 for _ in range(5):
     print("{}...".format(_))
@@ -74,7 +74,7 @@ for _ in range(5):
     
     # create 4 threads
     for i in range(4):
-        t = threading.Thread(target=do_upload, args=[bucket, i, "256kb-file"])
+        t = threading.Thread(target=do_upload, args=[bucket, i, "25MB-file"])
         threads.append(t)
         t.start()
     
@@ -90,11 +90,11 @@ for _ in range(5):
         bucket.get_blob('benchmark-{}'.format(i)).delete()
 
 
-# upload 256kb files to be downloaded in download benchmark up next
+# upload 25MB files to be downloaded in download benchmark up next
 for i in range(4):
-    do_upload(bucket, i, "256kb-file")
+    do_upload(bucket, i, "25MB-file")
 
-# do parallel download (4 threads parallelly download 256kb, 5 times)
+# do parallel download (4 threads parallelly download 25MB, 5 times)
 print("Doing parallel downloads")
 for _ in range(5):
     print("{}...".format(_))
