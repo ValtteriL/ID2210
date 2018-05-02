@@ -1,0 +1,14 @@
+#### Benchmarking local SSD
+Doing writing...
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.54642 s, 303 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.53562 s, 304 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.54795 s, 303 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.5306 s, 304 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.55356 s, 302 MB/s
+
+Doing reading...
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.51618 s, 427 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.5195 s, 426 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.54299 s, 422 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.73138 s, 393 MB/s
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.58937 s, 415 MB/s

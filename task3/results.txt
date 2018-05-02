@@ -1,0 +1,83 @@
+root@sinister:~# ./benchmark.sh |tee results.txt
+#### Benchmarking storage bucket
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 14.6376 s, 73.4 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.04948 s, 352 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 16.5535 s, 64.9 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.16902 s, 339 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 15.9884 s, 67.2 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.33131 s, 322 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 13.5063 s, 79.5 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.07781 s, 349 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 15.5972 s, 68.8 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.09076 s, 347 MB/s
+#### Benchmarking local SSD
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.54642 s, 303 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.51618 s, 427 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.53562 s, 304 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.5195 s, 426 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.54795 s, 303 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.54299 s, 422 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.5306 s, 304 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.73138 s, 393 MB/s
+Doing writing...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 3.55356 s, 302 MB/s
+Doing reading...
+0+1 records in
+0+1 records out
+1073741792 bytes (1.1 GB, 1.0 GiB) copied, 2.58937 s, 415 MB/s
