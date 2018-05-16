@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="dela" />
+        <module name="hops" />
+        <module name="ledbat" />
+        <module name="util" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cloud-project" target="1.7" />
+      <module name="dela" target="1.7" />
+      <module name="hops" target="1.7" />
+      <module name="ledbat" target="1.7" />
+      <module name="util" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

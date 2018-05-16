@@ -1,0 +1,34 @@
+name: HopsFS
+gce:
+    type: n1-standard-4
+    zone: europe-west1-b
+    image: ubuntu-1604-xenial-v20180306
+    diskSize: 25
+
+cookbooks:
+  hopsbench:
+    github: "hopshadoop/hops-hadoop-chef"
+    branch: "0.4"
+
+attrs:
+  install:
+    dir: /srv/hops
+    user: ubuntu
+  kagent:
+    enabled: false
+
+groups:
+  nn:
+    size: 1
+    recipes:
+      - ndb::mgmd
+      - ndb::mysqld
+      - hops::ndb
+      - hops::nn
+      - hops::dn
+
+  ndbd:
+    size: 2
+    recipes:
+      - ndb::ndbd
+      - hops::dn
