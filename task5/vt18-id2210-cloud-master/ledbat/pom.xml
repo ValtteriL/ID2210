@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <parent>
         <groupId>se.kth</groupId>
         <artifactId>cloud-project</artifactId>
@@ -17,5 +29,32 @@
         <artifactId>util</artifactId>
         <version>${project.version}</version>
       </dependency>
+
+        <dependency>
+            <groupId>se.sics.kompics.basic</groupId>
+            <artifactId>kompics-port-timer</artifactId>
+            <version>${kompics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>se.sics.kompics.basic</groupId>
+            <artifactId>kompics-port-network</artifactId>
+            <version>${kompics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>se.sics.kompics.basic</groupId>
+            <artifactId>kompics-component-netty-network</artifactId>
+            <version>${kompics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+        <groupId>se.sics.kompics.basic</groupId>
+        <artifactId>kompics-component-java-timer</artifactId>
+        <version>${kompics.version}</version>
+        <scope>compile</scope>
+        </dependency>
+
+
     </dependencies>
 </project>
