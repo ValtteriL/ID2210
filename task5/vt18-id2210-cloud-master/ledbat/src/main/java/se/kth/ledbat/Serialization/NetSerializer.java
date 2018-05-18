@@ -56,7 +56,7 @@ public class NetSerializer implements Serializer {
                 try {
                     InetAddress ip = InetAddress.getByAddress(ipBytes); // 4 bytes
                     int port = buf.readUnsignedShort(); // 2 bytes
-                    return new BasicAddress(ip, port, SOME_ID); // TODO fix serialization for the identifier
+                    return new BasicAddress(ip, port, null); // TODO fix serialization for the identifier
                 } catch (UnknownHostException ex) {
                     throw new RuntimeException(ex); // Let Netty deal with this
                 }
