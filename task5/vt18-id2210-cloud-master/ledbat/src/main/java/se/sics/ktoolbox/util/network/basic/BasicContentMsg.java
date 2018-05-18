@@ -23,10 +23,12 @@ import se.sics.ktoolbox.util.network.KAddress;
 import se.sics.ktoolbox.util.network.KContentMsg;
 import se.sics.ktoolbox.util.network.KHeader;
 
+import java.io.Serializable;
+
 /**
  * @author Alex Ormenisan <aaor@sics.se>
  */
-public class BasicContentMsg<A extends KAddress, H extends KHeader<A>, C extends Object> implements KContentMsg<A, H, C> {
+public class BasicContentMsg<A extends KAddress, H extends KHeader<A>, C extends Object> implements KContentMsg<A, H, C>, Serializable {
 
   private final H header;
   private final C content;

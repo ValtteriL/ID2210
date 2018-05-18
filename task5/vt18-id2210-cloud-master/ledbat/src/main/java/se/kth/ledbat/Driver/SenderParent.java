@@ -15,7 +15,8 @@ import se.sics.ktoolbox.util.network.basic.BasicAddress;
 public class SenderParent extends ComponentDefinition {
 
     public SenderParent(Init init) {
-        Component sender = create(LedbatSenderComp.class, Init.NONE);
+        Component sender = create(LedbatSenderComp.class,
+                new LedbatSenderComp.Init(new Main.MyIdentifier("a"), new Main.MyIdentifier("a"), new Main.MyIdentifier("a")));
         Component timer = create(JavaTimer.class, Init.NONE);
         Component network = create(NettyNetwork.class, new NettyInit(init.self));
 
@@ -24,7 +25,6 @@ public class SenderParent extends ComponentDefinition {
     }
 
     public static class Init extends se.sics.kompics.Init<SenderParent> {
-        // TODO what do we need in this Init?
         public BasicAddress self;
         public Init(BasicAddress self) {
             this.self = self;

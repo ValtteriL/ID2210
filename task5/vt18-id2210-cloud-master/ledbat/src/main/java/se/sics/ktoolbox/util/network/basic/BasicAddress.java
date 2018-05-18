@@ -18,6 +18,7 @@
  */
 package se.sics.ktoolbox.util.network.basic;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Objects;
@@ -28,7 +29,7 @@ import se.sics.ktoolbox.util.network.KAddress;
 /**
  * @author Alex Ormenisan <aaor@sics.se>
  */
-public class BasicAddress implements KAddress {
+public class BasicAddress implements KAddress, Serializable {
 
   private final Identifier id;
   private final String printForm;
