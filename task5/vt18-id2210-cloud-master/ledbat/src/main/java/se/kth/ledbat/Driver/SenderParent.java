@@ -12,23 +12,28 @@ import se.sics.kompics.timer.Timer;
 import se.sics.kompics.timer.java.JavaTimer;
 import se.sics.ktoolbox.util.network.basic.BasicAddress;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class SenderParent extends ComponentDefinition {
 
-    public SenderParent(Init init) {
+    public SenderParent() {
+        try {
+            InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
+            int port = config().getValue("ledbat.self.port1", Integer.class);
+
+            BasicAddress basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("Something"));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
         Component sender = create(LedbatSenderComp.class,
                 new LedbatSenderComp.Init(new Main.MyIdentifier("a"), new Main.MyIdentifier("a"), new Main.MyIdentifier("a")));
         Component timer = create(JavaTimer.class, Init.NONE);
-        Component network = create(NettyNetwork.class, new NettyInit(init.self));
+        Component network = create(NettyNetwork.class, new NettyInit(basicAddr));
 
         connect(sender.getNegative(Timer.class), timer.getPositive(Timer.class), Channel.TWO_WAY);
         connect(sender.getNegative(Network.class), network.getPositive(Network.class), Channel.TWO_WAY);
     }
-
-    public static class Init extends se.sics.kompics.Init<SenderParent> {
-        public BasicAddress self;
-        public Init(BasicAddress self) {
-            this.self = self;
-        }
-    }
-
 }
