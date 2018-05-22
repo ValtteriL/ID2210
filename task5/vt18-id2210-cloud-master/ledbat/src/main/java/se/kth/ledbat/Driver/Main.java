@@ -19,15 +19,14 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            int port = 8080;
-            BasicAddress self = new BasicAddress(InetAddress.getLocalHost(), port, new MyIdentifier("a"));
+
             if (args.length == 0) { // Server
 
-                Kompics.createAndStart(ReceiverParent.class, new ReceiverParent.Init(self), 2);
+                Kompics.createAndStart(ReceiverParent.class, Init.NONE, 2);
                 System.out.println("Started ReceiverParent...");
             } else if (args.length == 1) { // Client
 
-                Kompics.createAndStart(SenderParent.class, new SenderParent.Init(self));
+                Kompics.createAndStart(SenderParent.class, Init.NONE);
                 System.out.println("Started SenderParent...");
             } else {
                 System.err.println("Invalid number of parameters");
