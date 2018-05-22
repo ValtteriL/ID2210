@@ -1,6 +1,7 @@
 package se.kth.ledbat.Driver;
 
 import se.kth.ledbat.Serialization.NetSerializer;
+import se.sics.kompics.Init;
 import se.sics.kompics.Kompics;
 import se.sics.kompics.network.netty.serialization.Serializers;
 import se.sics.kompics.util.ByteIdentifier;
