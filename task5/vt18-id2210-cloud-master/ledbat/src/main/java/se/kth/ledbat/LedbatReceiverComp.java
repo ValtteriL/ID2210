@@ -53,6 +53,7 @@ public class LedbatReceiverComp extends ComponentDefinition {
     logPrefix = "<" + dataId + "," + senderId + "," + receiverId + ">";
 
     subscribe(handleStart, control);
+    subscribe(handleIncomingMsg, outgoingNetworkPort); //  This might have been a bug
   }
 
   Handler handleStart = new Handler<Start>() {
