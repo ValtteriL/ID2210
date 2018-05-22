@@ -25,8 +25,7 @@ public class Main {
 
                 Kompics.createAndStart(ReceiverParent.class, new ReceiverParent.Init(self), 2);
                 System.out.println("Started ReceiverParent...");
-            } else if (args.length == 1) { // Client. Param is the IP
-                InetAddress ip = InetAddress.getByName(args[0]);
+            } else if (args.length == 1) { // Client
 
                 Kompics.createAndStart(SenderParent.class, new SenderParent.Init(self));
                 System.out.println("Started SenderParent...");
