@@ -3,6 +3,7 @@ package se.kth.ledbat.Driver;
 import se.kth.ledbat.LedbatReceiverComp;
 import se.kth.ledbat.LedbatSenderComp;
 import se.sics.kompics.Channel;
+import se.sics.kompics.Init;
 import se.sics.kompics.Component;
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.network.Network;
@@ -20,20 +21,36 @@ public class ReceiverParent extends ComponentDefinition {
     public ReceiverParent() {
 
         BasicAddress basicAddr = null;
+        BasicAddress basicAddr2 = null;
         try {
             InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
             int port = config().getValue("ledbat.self.port2", Integer.class);
 
-            basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("Something"));
+            basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("a"));
+            basicAddr2 = new BasicAddress(ip, port+1, new Main.MyIdentifier("b"));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        Component receiver = create(LedbatReceiverComp.class,
-                new LedbatReceiverComp.Init(new Main.MyIdentifier("c"), new Main.MyIdentifier("b"), new Main.MyIdentifier("a")));
-        Component network = create(NettyNetwork.class, new NettyInit(basicAddr));
+        // create networks and timer
+        Component network1 = create(NettyNetwork.class, new NettyInit(basicAddr));
+        Component network2 = create(NettyNetwork.class, new NettyInit(basicAddr2));
+        Component timer = create(JavaTimer.class, Init.NONE);
 
-        connect(receiver.getNegative(Network.class), network.getPositive(Network.class), Channel.TWO_WAY);
+        // create receiver
+        Component receiver = create(LedbatReceiverComp.class,
+                new LedbatReceiverComp.Init(new Main.MyIdentifier("a"), new Main.MyIdentifier("b"), new Main.MyIdentifier("c")));
+
+        // create sender
+        Component sender = create(LedbatSenderComp.class,
+            new LedbatSenderComp.Init(new Main.MyIdentifier("a"), new Main.MyIdentifier("b"), new Main.MyIdentifier("c")));
+
+        // connect timer and network1 to sender
+        connect(sender.getNegative(Timer.class), timer.getPositive(Timer.class), Channel.TWO_WAY); // connect timer to sender
+        connect(sender.getNegative(Network.class), network1.getPositive(Network.class), Channel.TWO_WAY); // connect sender to network
+
+        // connect network 2 to receiver
+        connect(receiver.getNegative(Network.class), network2.getPositive(Network.class), Channel.TWO_WAY); // connect receiver to network
     }
 }

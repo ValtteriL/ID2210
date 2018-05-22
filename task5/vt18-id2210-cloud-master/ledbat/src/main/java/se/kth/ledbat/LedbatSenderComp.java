@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.kth.ledbat.msgs.LedbatMsg;
@@ -26,11 +27,20 @@ import se.sics.kompics.timer.CancelPeriodicTimeout;
 import se.sics.kompics.timer.SchedulePeriodicTimeout;
 import se.sics.kompics.timer.Timeout;
 import se.sics.kompics.timer.Timer;
+import se.sics.kompics.network.Transport;
+import se.sics.ktoolbox.util.network.basic.BasicHeader;
 import se.sics.kompics.util.Identifiable;
 import se.sics.kompics.util.Identifier;
 import se.sics.ktoolbox.util.network.basic.BasicContentMsg;
 import se.sics.util.RingTimer;
 import se.sics.util.RingTimer.Container;
+import se.sics.ktoolbox.util.network.basic.BasicAddress;
+import java.net.InetAddress;
+
+import java.net.UnknownHostException;
+import se.sics.kompics.Kompics;
+import se.sics.kompics.network.netty.serialization.Serializers;
+
 
 /**
  * @author Alex Ormenisan <aaor@kth.se>
@@ -65,6 +75,14 @@ public class LedbatSenderComp extends ComponentDefinition {
     cwnd = new Cwnd(ledbatConfig);
     rttEstimator = new RTTEstimator(ledbatConfig);
     ringTimer = new RingTimer(HardCodedConfig.windowSize, HardCodedConfig.maxTimeout);
+
+    try {
+      // source, destination, transport
+      pendingData.add(new BasicContentMsg(new BasicHeader(new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.senderId), new BasicAddress(InetAddress.getByName("127.0.0.1"), 8082, this.receiverId), Transport.LEDBAT),"fuck the police"));
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
 
     subscribe(handleStart, control);
     subscribe(handleIncomingAck, outgoingNetworkPort);
@@ -135,7 +153,8 @@ public class LedbatSenderComp extends ComponentDefinition {
 
   private void trySend() {
     while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
-      BasicContentMsg<?, ?, Identifiable> msg = pendingData.removeFirst();
+      // BasicContentMsg<?, ?, Identifiable> msg = pendingData.removeFirst();
+      BasicContentMsg<?, ?, Identifiable> msg = pendingData.peek();
       LOG.trace("{}sending:{}", logPrefix, msg);
       LedbatMsg.Data wrappedData = new LedbatMsg.Data(dataId, msg.extractValue());
       BasicContentMsg ledbatMsg = new BasicContentMsg(msg.getHeader(), wrappedData);
