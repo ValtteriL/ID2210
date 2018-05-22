@@ -37,9 +37,6 @@ public class Main {
             Thread.sleep(15000);
             Kompics.shutdown();
             System.exit(0);
-        } catch (UnknownHostException ex) {
-            System.err.println(ex);
-            System.exit(1);
         } catch (InterruptedException e) {
             System.err.println(e);
             System.exit(1);

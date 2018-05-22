@@ -18,11 +18,13 @@ import java.net.UnknownHostException;
 public class ReceiverParent extends ComponentDefinition {
 
     public ReceiverParent() {
+
+        BasicAddress basicAddr = null;
         try {
             InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
             int port = config().getValue("ledbat.self.port2", Integer.class);
 
-            BasicAddress basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("Something"));
+            basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("Something"));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);

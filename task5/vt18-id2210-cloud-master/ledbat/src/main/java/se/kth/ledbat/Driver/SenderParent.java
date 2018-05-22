@@ -5,6 +5,7 @@ import se.kth.ledbat.LedbatSenderComp;
 import se.sics.kompics.Channel;
 import se.sics.kompics.Component;
 import se.sics.kompics.ComponentDefinition;
+import se.sics.kompics.Init;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.network.netty.NettyInit;
 import se.sics.kompics.network.netty.NettyNetwork;
@@ -18,11 +19,12 @@ import java.net.UnknownHostException;
 public class SenderParent extends ComponentDefinition {
 
     public SenderParent() {
+        BasicAddress basicAddr = null;
         try {
             InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
             int port = config().getValue("ledbat.self.port1", Integer.class);
 
-            BasicAddress basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("Something"));
+            basicAddr = new BasicAddress(ip, port, new Main.MyIdentifier("Something"));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
