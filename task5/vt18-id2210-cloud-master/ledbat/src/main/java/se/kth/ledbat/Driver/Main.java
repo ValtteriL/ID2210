@@ -5,6 +5,7 @@ import se.sics.kompics.Init;
 import se.sics.kompics.Kompics;
 import se.sics.kompics.network.netty.serialization.Serializers;
 import se.sics.kompics.util.ByteIdentifier;
+import se.sics.kompics.util.Identifiable;
 import se.sics.kompics.util.Identifier;
 import se.sics.ktoolbox.util.identifiable.basic.PairIdentifier;
 import se.sics.ktoolbox.util.network.basic.BasicAddress;
@@ -42,39 +43,4 @@ public class Main {
             System.exit(1);
         }
     }
-
-
-    public static class MyIdentifier implements Identifier {
-
-        String id;
-
-        public MyIdentifier(String id) {
-            this.id = id;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            MyIdentifier that = (MyIdentifier) o;
-            return Objects.equals(id, that.id);
-        }
-
-        @Override
-        public int hashCode() {
-
-            return Objects.hash(id);
-        }
-
-        @Override
-        public int partition(int i) {
-            return 0;
-        }
-
-        @Override
-        public int compareTo(Identifier o) {
-            return 0;
-        }
-    }
-
 }

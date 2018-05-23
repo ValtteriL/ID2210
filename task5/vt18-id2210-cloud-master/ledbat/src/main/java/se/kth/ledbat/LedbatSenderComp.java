@@ -5,12 +5,15 @@
  */
 package se.kth.ledbat;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.kth.ledbat.Driver.MyIdentifier;
 import se.kth.ledbat.msgs.LedbatMsg;
 import se.kth.ledbat.util.Cwnd;
 import se.kth.ledbat.util.LedbatConfig;
@@ -22,13 +25,16 @@ import se.sics.kompics.Negative;
 import se.sics.kompics.Positive;
 import se.sics.kompics.Start;
 import se.sics.kompics.network.Network;
+import se.sics.kompics.network.Transport;
 import se.sics.kompics.timer.CancelPeriodicTimeout;
 import se.sics.kompics.timer.SchedulePeriodicTimeout;
 import se.sics.kompics.timer.Timeout;
 import se.sics.kompics.timer.Timer;
 import se.sics.kompics.util.Identifiable;
 import se.sics.kompics.util.Identifier;
+import se.sics.ktoolbox.util.network.basic.BasicAddress;
 import se.sics.ktoolbox.util.network.basic.BasicContentMsg;
+import se.sics.ktoolbox.util.network.basic.BasicHeader;
 import se.sics.util.RingTimer;
 import se.sics.util.RingTimer.Container;
 
@@ -77,8 +83,23 @@ public class LedbatSenderComp extends ComponentDefinition {
     public void handle(Start event) {
       LOG.info("{}starting...", logPrefix);
       scheduleRingTimeout(HardCodedConfig.windowSize);
+      //kek();
     }
   };
+
+  public void kek() {
+    try {
+      handleOutgoingMsg.handle(new BasicContentMsg(
+              new BasicHeader(
+                      new BasicAddress(InetAddress.getByName("127.0.0.1"), 8080, this.senderId),
+                      new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.receiverId), Transport.UDP),
+              new MyIdentifier("some content")
+      ));
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
 
   @Override
   public void tearDown() {
@@ -134,7 +155,8 @@ public class LedbatSenderComp extends ComponentDefinition {
   };
 
   private void trySend() {
-    while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
+    while (!pendingData.isEmpty()) {
+    //while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
       BasicContentMsg<?, ?, Identifiable> msg = pendingData.removeFirst();
       LOG.trace("{}sending:{}", logPrefix, msg);
       LedbatMsg.Data wrappedData = new LedbatMsg.Data(dataId, msg.extractValue());

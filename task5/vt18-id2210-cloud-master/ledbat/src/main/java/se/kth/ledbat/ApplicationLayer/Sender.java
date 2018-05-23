@@ -3,6 +3,8 @@ package se.kth.ledbat.ApplicationLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.kth.ledbat.Driver.Main;
+import se.kth.ledbat.Driver.MyIdentifier;
+import se.kth.ledbat.Driver.MyString;
 import se.kth.ledbat.LedbatSenderComp;
 import se.sics.kompics.*;
 import se.sics.kompics.network.Network;
@@ -34,10 +36,10 @@ public class Sender extends ComponentDefinition {
                 try {
                     Thread.sleep(2000);
                     BasicContentMsg msg = new BasicContentMsg(new BasicHeader(
-                            new BasicAddress(InetAddress.getLocalHost(), 8080, new Main.MyIdentifier("senderID")),
-                            new BasicAddress(InetAddress.getLocalHost(), 8081, new Main.MyIdentifier("receiverID")),
-                            Transport.LEDBAT),
-                            "fuck the popo");
+                            new BasicAddress(InetAddress.getLocalHost(), 8080, new MyString("senderID")),
+                            new BasicAddress(InetAddress.getLocalHost(), 8081, new MyString("receiverID")),
+                            Transport.UDP),
+                            new MyIdentifier("fuck the popo"));
                     trigger(msg, ledbatSender);
                     //LOG.debug("Sender sending {}", msg.toString());
                 } catch (InterruptedException e) {
