@@ -12,6 +12,8 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import se.kth.ledbat.Driver.MyIdentifier;
 import se.kth.ledbat.msgs.LedbatMsg;
 import se.kth.ledbat.util.Cwnd;
 import se.kth.ledbat.util.LedbatConfig;
@@ -41,6 +43,7 @@ import java.net.UnknownHostException;
 import se.sics.kompics.Kompics;
 import se.sics.kompics.network.netty.serialization.Serializers;
 
+import se.kth.ledbat.Driver.*;
 
 /**
  * @author Alex Ormenisan <aaor@kth.se>
@@ -78,7 +81,10 @@ public class LedbatSenderComp extends ComponentDefinition {
 
     try {
       // source, destination, transport
-      pendingData.add(new BasicContentMsg(new BasicHeader(new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.senderId), new BasicAddress(InetAddress.getByName("127.0.0.1"), 8082, this.receiverId), Transport.LEDBAT),"fuck the police"));
+      pendingData.add(new BasicContentMsg(
+          new BasicHeader(new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.senderId),
+              new BasicAddress(InetAddress.getByName("127.0.0.1"), 8082, this.receiverId), Transport.UDP),
+          new Main.MyIdentifier("fuq da politi")));
     } catch (Exception e) {
       e.printStackTrace();
       System.exit(1);
@@ -94,35 +100,48 @@ public class LedbatSenderComp extends ComponentDefinition {
     @Override
     public void handle(Start event) {
       LOG.info("{}starting...", logPrefix);
+      System.out.println("Message queue: " + pendingData.size());
       scheduleRingTimeout(HardCodedConfig.windowSize);
+      kek();
     }
   };
+
+  public void kek() {
+    try {
+      handleOutgoingMsg.handle(new BasicContentMsg(
+          new BasicHeader(new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.senderId),
+              new BasicAddress(InetAddress.getByName("127.0.0.1"), 8082, this.receiverId), Transport.UDP),
+          new Main.MyIdentifier("fuck da police")));
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
 
   @Override
   public void tearDown() {
     cancelRingTimeout();
   }
 
-  ClassMatchedHandler handleIncomingAck
-    = new ClassMatchedHandler<LedbatMsg.Ack, BasicContentMsg<?, ?, LedbatMsg.Ack>>() {
+  ClassMatchedHandler handleIncomingAck = new ClassMatchedHandler<LedbatMsg.Ack, BasicContentMsg<?, ?, LedbatMsg.Ack>>() {
 
-      @Override
-      public void handle(LedbatMsg.Ack payload, BasicContentMsg<?, ?, LedbatMsg.Ack> msg) {
-        LOG.trace("{}received:{}", logPrefix, msg);
-        Optional<Container> containerAux = ringTimer.cancelTimeout(payload.eventId);
-        if (!containerAux.isPresent()) {
-          LOG.trace("{}late:{}", logPrefix, payload.getId());
-          return;
-        }
-        long now = System.currentTimeMillis();
-        long rtt = payload.ackDelay.receive - payload.dataDelay.send;
-        long dataDelay = payload.dataDelay.receive - payload.dataDelay.send;
-        cwnd.ack(now, dataDelay, ledbatConfig.MSS);
-        rttEstimator.update(rtt);
-        ringTimer.cancelTimeout(payload.eventId);
-        trySend();
+    @Override
+    public void handle(LedbatMsg.Ack payload, BasicContentMsg<?, ?, LedbatMsg.Ack> msg) {
+      LOG.trace("{}received:{}", logPrefix, msg);
+      Optional<Container> containerAux = ringTimer.cancelTimeout(payload.eventId);
+      if (!containerAux.isPresent()) {
+        LOG.trace("{}late:{}", logPrefix, payload.getId());
+        return;
       }
-    };
+      long now = System.currentTimeMillis();
+      long rtt = payload.ackDelay.receive - payload.dataDelay.send;
+      long dataDelay = payload.dataDelay.receive - payload.dataDelay.send;
+      cwnd.ack(now, dataDelay, ledbatConfig.MSS);
+      rttEstimator.update(rtt);
+      ringTimer.cancelTimeout(payload.eventId);
+      trySend();
+    }
+  };
 
   Handler handleOutgoingMsg = new Handler<BasicContentMsg>() {
     @Override
@@ -152,7 +171,10 @@ public class LedbatSenderComp extends ComponentDefinition {
   };
 
   private void trySend() {
-    while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
+    System.out.println("TRYNA SEND");
+    System.out.println("Message queue: " + pendingData.size());
+    while (!pendingData.isEmpty() /* && cwnd.canSend(ledbatConfig.MSS) */) {
+      System.out.println("SENDING");
       // BasicContentMsg<?, ?, Identifiable> msg = pendingData.removeFirst();
       BasicContentMsg<?, ?, Identifiable> msg = pendingData.peek();
       LOG.trace("{}sending:{}", logPrefix, msg);
@@ -208,12 +230,12 @@ public class LedbatSenderComp extends ComponentDefinition {
 
   public static class RingTimeout extends Timeout {
     public final Identifier transferId;
-    
+
     public RingTimeout(SchedulePeriodicTimeout spt, Identifier transferId) {
       super(spt);
-       this.transferId = transferId;
+      this.transferId = transferId;
     }
-    
+
     public Identifier transferId() {
       return transferId;
     }
