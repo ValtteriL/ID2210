@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.kth.ledbat.Driver.MyIdentifier;
+import se.kth.ledbat.Driver.MyIdentifiable;
 import se.kth.ledbat.msgs.LedbatMsg;
 import se.kth.ledbat.util.Cwnd;
 import se.kth.ledbat.util.LedbatConfig;
@@ -93,7 +93,7 @@ public class LedbatSenderComp extends ComponentDefinition {
               new BasicHeader(
                       new BasicAddress(InetAddress.getByName("127.0.0.1"), 8080, this.senderId),
                       new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.receiverId), Transport.UDP),
-              new MyIdentifier("some content")
+              new MyIdentifiable("some content")
       ));
     } catch (UnknownHostException e) {
       e.printStackTrace();

@@ -1,15 +1,12 @@
 package se.kth.ledbat.Driver;
 
 import se.sics.kompics.util.Identifiable;
-import se.sics.kompics.util.Identifier;
 
-import java.util.Objects;
-
-public class MyIdentifier implements Identifiable<MyString> {
+public class MyIdentifiable implements Identifiable<MyString> {
 
     MyString id;
 
-    public MyIdentifier(String id) {
+    public MyIdentifiable(String id) {
         this.id = new MyString(id);
     }
 
