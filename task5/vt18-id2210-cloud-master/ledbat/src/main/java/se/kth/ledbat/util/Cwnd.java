@@ -18,6 +18,7 @@
  */
 package se.kth.ledbat.util;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -25,7 +26,7 @@ import java.util.Arrays;
  * <p>
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class Cwnd {
+public class Cwnd implements Serializable {
 
   private final LedbatConfig config;
   private long[] currentDelays;

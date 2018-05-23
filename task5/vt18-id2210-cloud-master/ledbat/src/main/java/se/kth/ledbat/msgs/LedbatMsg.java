@@ -18,6 +18,7 @@
  */
 package se.kth.ledbat.msgs;
 
+import java.io.Serializable;
 import java.util.Map;
 import se.sics.kompics.PatternExtractor;
 import se.sics.kompics.util.Identifiable;
@@ -27,12 +28,12 @@ import se.kth.ledbat.util.OneWayDelay;
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class LedbatMsg {
+public class LedbatMsg implements Serializable {
   public static interface LedbatConn {
     public Identifier getDataId();
   }
   
-  public static class Data<P extends Identifiable> implements PatternExtractor, LedbatConn {
+  public static class Data<P extends Identifiable> implements Serializable,PatternExtractor, LedbatConn {
 
     public final Identifier dataId;
     public final P data;
@@ -65,7 +66,7 @@ public class LedbatMsg {
 
   }
 
-  public static class Ack implements Identifiable, LedbatConn {
+  public static class Ack implements Identifiable, LedbatConn, Serializable {
 
     public final Identifier eventId;
     public final Identifier dataId;
@@ -90,7 +91,7 @@ public class LedbatMsg {
     }
   }
 
-  public static class BulkAck {
+  public static class BulkAck implements Serializable {
 
     public final Map<Identifier, OneWayDelay> data;
     public final OneWayDelay ack;

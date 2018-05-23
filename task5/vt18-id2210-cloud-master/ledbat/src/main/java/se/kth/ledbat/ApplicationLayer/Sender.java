@@ -34,8 +34,8 @@ public class Sender extends ComponentDefinition {
                 try {
                     Thread.sleep(2000);
                     BasicContentMsg msg = new BasicContentMsg(new BasicHeader(
-                            new BasicAddress(InetAddress.getLocalHost(), 8080, new MyString("senderID")),
-                            new BasicAddress(InetAddress.getLocalHost(), 8081, new MyString("receiverID")),
+                            new BasicAddress(InetAddress.getByName("127.0.0.1"), 8080, new MyString("senderID")),
+                            new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, new MyString("receiverID")),
                             Transport.UDP),
                             new MyIdentifiable("fuck the popo"));
                     trigger(msg, ledbatSender);

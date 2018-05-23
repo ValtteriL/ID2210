@@ -18,10 +18,12 @@
  */
 package se.kth.ledbat.util;
 
+import java.io.Serializable;
+
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class OneWayDelay {
+public class OneWayDelay implements Serializable{
   public long send;
   public long receive;
   

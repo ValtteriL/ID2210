@@ -18,10 +18,12 @@
  */
 package se.kth.ledbat.util;
 
+import java.io.Serializable;
+
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class LedbatConfig {
+public class LedbatConfig implements Serializable {
   /**
    * https://tools.ietf.org/html/rfc6817#ref-uTorrent
    */
