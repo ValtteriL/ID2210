@@ -2,7 +2,9 @@ package se.kth.ledbat.Driver;
 
 import se.sics.kompics.util.Identifiable;
 
-public class MyIdentifiable implements Identifiable<MyString> {
+import java.io.Serializable;
+
+public class MyIdentifiable implements Identifiable<MyString>, Serializable {
 
     MyString id;
 

@@ -2,9 +2,10 @@ package se.kth.ledbat.Driver;
 
 import se.sics.kompics.util.Identifier;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class MyString implements Identifier {
+public class MyString implements Identifier, Serializable {
 
     String id;
 
