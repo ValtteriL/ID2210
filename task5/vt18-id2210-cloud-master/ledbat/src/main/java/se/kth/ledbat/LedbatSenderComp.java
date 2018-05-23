@@ -5,15 +5,12 @@
  */
 package se.kth.ledbat;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.kth.ledbat.Driver.Main;
 import se.kth.ledbat.msgs.LedbatMsg;
 import se.kth.ledbat.util.Cwnd;
 import se.kth.ledbat.util.LedbatConfig;
@@ -24,18 +21,14 @@ import se.sics.kompics.Handler;
 import se.sics.kompics.Negative;
 import se.sics.kompics.Positive;
 import se.sics.kompics.Start;
-import se.sics.kompics.network.Msg;
 import se.sics.kompics.network.Network;
-import se.sics.kompics.network.Transport;
 import se.sics.kompics.timer.CancelPeriodicTimeout;
 import se.sics.kompics.timer.SchedulePeriodicTimeout;
 import se.sics.kompics.timer.Timeout;
 import se.sics.kompics.timer.Timer;
 import se.sics.kompics.util.Identifiable;
 import se.sics.kompics.util.Identifier;
-import se.sics.ktoolbox.util.network.basic.BasicAddress;
 import se.sics.ktoolbox.util.network.basic.BasicContentMsg;
-import se.sics.ktoolbox.util.network.basic.BasicHeader;
 import se.sics.util.RingTimer;
 import se.sics.util.RingTimer.Container;
 
@@ -93,25 +86,25 @@ public class LedbatSenderComp extends ComponentDefinition {
   }
 
   ClassMatchedHandler handleIncomingAck
-    = new ClassMatchedHandler<LedbatMsg.Ack, BasicContentMsg<?, ?, LedbatMsg.Ack>>() {
+          = new ClassMatchedHandler<LedbatMsg.Ack, BasicContentMsg<?, ?, LedbatMsg.Ack>>() {
 
-      @Override
-      public void handle(LedbatMsg.Ack payload, BasicContentMsg<?, ?, LedbatMsg.Ack> msg) {
-        LOG.trace("{}received:{}", logPrefix, msg);
-        Optional<Container> containerAux = ringTimer.cancelTimeout(payload.eventId);
-        if (!containerAux.isPresent()) {
-          LOG.trace("{}late:{}", logPrefix, payload.getId());
-          return;
-        }
-        long now = System.currentTimeMillis();
-        long rtt = payload.ackDelay.receive - payload.dataDelay.send;
-        long dataDelay = payload.dataDelay.receive - payload.dataDelay.send;
-        cwnd.ack(now, dataDelay, ledbatConfig.MSS);
-        rttEstimator.update(rtt);
-        ringTimer.cancelTimeout(payload.eventId);
-        trySend();
+    @Override
+    public void handle(LedbatMsg.Ack payload, BasicContentMsg<?, ?, LedbatMsg.Ack> msg) {
+      LOG.trace("{}received:{}", logPrefix, msg);
+      Optional<Container> containerAux = ringTimer.cancelTimeout(payload.eventId);
+      if (!containerAux.isPresent()) {
+        LOG.trace("{}late:{}", logPrefix, payload.getId());
+        return;
       }
-    };
+      long now = System.currentTimeMillis();
+      long rtt = payload.ackDelay.receive - payload.dataDelay.send;
+      long dataDelay = payload.dataDelay.receive - payload.dataDelay.send;
+      cwnd.ack(now, dataDelay, ledbatConfig.MSS);
+      rttEstimator.update(rtt);
+      ringTimer.cancelTimeout(payload.eventId);
+      trySend();
+    }
+  };
 
   Handler handleOutgoingMsg = new Handler<BasicContentMsg>() {
     @Override
@@ -196,12 +189,12 @@ public class LedbatSenderComp extends ComponentDefinition {
 
   public static class RingTimeout extends Timeout {
     public final Identifier transferId;
-    
+
     public RingTimeout(SchedulePeriodicTimeout spt, Identifier transferId) {
       super(spt);
-       this.transferId = transferId;
+      this.transferId = transferId;
     }
-    
+
     public Identifier transferId() {
       return transferId;
     }

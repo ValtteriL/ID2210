@@ -41,7 +41,7 @@ public class SenderParent extends ComponentDefinition {
         Component network = create(NettyNetwork.class, new NettyInit(basicAddr));
         Component sender = create(Sender.class, Init.NONE);
 
-        connect(ledbatSender.getNegative(Timer.class), timer.getPositive(Timer.class), Channel.TWO_WAY);
+        connect(timer.getPositive(Timer.class), ledbatSender.getNegative(Timer.class), Channel.TWO_WAY);
         connect(ledbatSender.getNegative(Network.class), network.getPositive(Network.class), Channel.TWO_WAY);
         connect(sender.getNegative(Network.class), ledbatSender.getPositive(Network.class), Channel.TWO_WAY);
     }

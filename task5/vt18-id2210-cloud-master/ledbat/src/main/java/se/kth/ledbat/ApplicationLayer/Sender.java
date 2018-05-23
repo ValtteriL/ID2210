@@ -31,9 +31,8 @@ public class Sender extends ComponentDefinition {
             LOG.info("{}starting...", logPrefix);
 
             while (true) {
-
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                     BasicContentMsg msg = new BasicContentMsg(new BasicHeader(
                             new BasicAddress(InetAddress.getLocalHost(), 8080, new Main.MyIdentifier("senderID")),
                             new BasicAddress(InetAddress.getLocalHost(), 8081, new Main.MyIdentifier("receiverID")),

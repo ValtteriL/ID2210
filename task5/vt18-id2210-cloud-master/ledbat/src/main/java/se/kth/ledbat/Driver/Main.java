@@ -27,7 +27,7 @@ public class Main {
                 System.out.println("Started ReceiverParent...");
             } else if (args.length == 1) { // Client
 
-                Kompics.createAndStart(SenderParent.class, Init.NONE);
+                Kompics.createAndStart(SenderParent.class, Init.NONE, 2);
                 System.out.println("Started SenderParent...");
             } else {
                 System.err.println("Invalid number of parameters");
