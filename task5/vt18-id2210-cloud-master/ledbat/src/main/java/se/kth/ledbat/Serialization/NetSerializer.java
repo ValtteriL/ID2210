@@ -54,13 +54,13 @@ public class NetSerializer implements Serializer {
             //buf.writeByte(header.getProtocol().ordinal()); // 1 byte is enough
             byte b = 0;
             buf.writeByte(b); // 1 byte is enough
-            System.out.println("KEK2 " + header.getProtocol().ordinal());
             // total = 16 bytes
         } else if (o instanceof BasicContentMsg) {
             BasicContentMsg msg = (BasicContentMsg) o;
             buf.writeByte(MSG);
             this.toBinary(msg.getHeader(), buf);
             this.toBinary(msg.getContent(), buf);
+            System.out.println("KEK " + msg.getContent());
         } else if (o instanceof OneWayDelay) {
             OneWayDelay oneWayDelay = (OneWayDelay) o;
             buf.writeByte(ONEWAYDELAY);
@@ -117,15 +117,15 @@ public class NetSerializer implements Serializer {
                 BasicAddress src = (BasicAddress) this.fromBinary(buf, Optional.absent()); // We already know what it's going to be (7 bytes)
                 BasicAddress dst = (BasicAddress) this.fromBinary(buf, Optional.absent()); // same here (7 bytes)
                 int protoOrd = buf.readByte(); // 1 byte
-                System.out.println("KEK " + protoOrd);
                 //Transport proto = Transport.values()[protoOrd];
                 Transport proto = Transport.values()[0];
                 return new BasicHeader<>(src, dst, proto); // Total = 16 bytes, check
             }
             case MSG: {
                 BasicHeader header = (BasicHeader) this.fromBinary(buf, Optional.absent());
-                MyIdentifiable myIdentifiable = (MyIdentifiable) this.fromBinary(buf, Optional.absent());
-                return new BasicContentMsg(header, myIdentifiable);
+                LedbatMsg.Data data = (LedbatMsg.Data) this.fromBinary(buf, Optional.absent());
+                //MyIdentifiable myIdentifiable = (MyIdentifiable) this.fromBinary(buf, Optional.absent());
+                return new BasicContentMsg(header, data);
             }
             case ONEWAYDELAY: { // TODO maybe not supposed to assign values?
                 long send = buf.readLong();
