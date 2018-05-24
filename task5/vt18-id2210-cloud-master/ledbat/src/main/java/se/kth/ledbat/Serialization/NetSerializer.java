@@ -35,12 +35,13 @@ public class NetSerializer implements Serializer {
 
     private static final byte ADDR = 1;
     private static final byte HEADER = 2;
-    private static final byte MSG = 3;
-    private static final byte ONEWAYDELAY = 4;
-    private static final byte MYSTRING = 5;
-    private static final byte MYIDENTIFIABLE = 6;
-    private static final byte DATA = 7;
-    private static final byte ACK = 8;
+    private static final byte DATAMSG = 3;
+    private static final byte ACKMSG = 4;
+    private static final byte ONEWAYDELAY = 5;
+    private static final byte MYSTRING = 6;
+    private static final byte MYIDENTIFIABLE = 7;
+    private static final byte DATA = 8;
+    private static final byte ACK = 9;
 
     @Override
     public int identifier() {
@@ -67,10 +68,17 @@ public class NetSerializer implements Serializer {
             // total = 16 bytes
         } else if (o instanceof BasicContentMsg) {
             BasicContentMsg msg = (BasicContentMsg) o;
-            buf.writeByte(MSG);
-            this.toBinary(msg.getHeader(), buf);
-            this.toBinary(msg.getContent(), buf);
-            System.out.println("KEK " + msg.getContent());
+
+            if (msg.getContent() instanceof LedbatMsg.Data) {
+                buf.writeByte(DATAMSG);
+                this.toBinary(msg.getHeader(), buf);
+                this.toBinary(msg.getContent(), buf);
+            } else if (msg.getContent() instanceof LedbatMsg.Ack) {
+                buf.writeByte(ACKMSG);
+                this.toBinary(msg.getHeader(), buf);
+                this.toBinary(msg.getContent(), buf);
+            }
+
         } else if (o instanceof OneWayDelay) {
             OneWayDelay oneWayDelay = (OneWayDelay) o;
             buf.writeByte(ONEWAYDELAY);
@@ -131,10 +139,15 @@ public class NetSerializer implements Serializer {
                 Transport proto = Transport.values()[0];
                 return new BasicHeader<>(src, dst, proto); // Total = 16 bytes, check
             }
-            case MSG: {
+            case DATAMSG: {
                 BasicHeader header = (BasicHeader) this.fromBinary(buf, Optional.absent());
                 LedbatMsg.Data data = (LedbatMsg.Data) this.fromBinary(buf, Optional.absent());
                 return new BasicContentMsg(header, data);
+            }
+            case ACKMSG: {
+                BasicHeader header = (BasicHeader) this.fromBinary(buf, Optional.absent());
+                LedbatMsg.Ack ack = (LedbatMsg.Ack) this.fromBinary(buf, Optional.absent());
+                return new BasicContentMsg(header, ack);
             }
             case ONEWAYDELAY: { // TODO maybe not supposed to assign values?
                 long send = buf.readLong();
