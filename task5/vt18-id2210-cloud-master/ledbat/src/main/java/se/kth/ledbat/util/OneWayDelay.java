@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class OneWayDelay implements Serializable{
+public class OneWayDelay {
   public long send;
   public long receive;
   

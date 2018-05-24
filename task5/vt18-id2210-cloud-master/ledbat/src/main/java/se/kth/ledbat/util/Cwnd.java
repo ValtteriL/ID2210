@@ -26,7 +26,7 @@ import java.util.Arrays;
  * <p>
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class Cwnd implements Serializable {
+public class Cwnd {
 
   private final LedbatConfig config;
   private long[] currentDelays;

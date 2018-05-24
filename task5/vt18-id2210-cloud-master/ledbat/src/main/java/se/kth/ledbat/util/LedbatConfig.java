@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class LedbatConfig implements Serializable {
+public class LedbatConfig {
   /**
    * https://tools.ietf.org/html/rfc6817#ref-uTorrent
    */

@@ -29,7 +29,7 @@ import se.sics.ktoolbox.util.network.KAddress;
 /**
  * @author Alex Ormenisan <aaor@sics.se>
  */
-public class BasicAddress implements KAddress, Serializable {
+public class BasicAddress implements KAddress {
 
   private final Identifier id;
   private final String printForm;

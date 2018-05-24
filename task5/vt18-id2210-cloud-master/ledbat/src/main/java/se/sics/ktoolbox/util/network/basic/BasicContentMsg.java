@@ -28,7 +28,7 @@ import java.io.Serializable;
 /**
  * @author Alex Ormenisan <aaor@sics.se>
  */
-public class BasicContentMsg<A extends KAddress, H extends KHeader<A>, C extends Object> implements KContentMsg<A, H, C>, Serializable {
+public class BasicContentMsg<A extends KAddress, H extends KHeader<A>, C extends Object> implements KContentMsg<A, H, C> {
 
   private final H header;
   private final C content;

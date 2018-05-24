@@ -27,7 +27,7 @@ import java.io.Serializable;
 /**
  * @author Alex Ormenisan <aaor@sics.se>
  */
-public class BasicHeader<Adr extends KAddress> implements KHeader<Adr>, Serializable {
+public class BasicHeader<Adr extends KAddress> implements KHeader<Adr> {
 
     private final Adr src;
     private final Adr dst;

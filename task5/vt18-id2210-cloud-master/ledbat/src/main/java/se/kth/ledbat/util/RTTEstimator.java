@@ -24,7 +24,7 @@ import java.io.Serializable;
  * exact implementation of https://tools.ietf.org/html/rfc6298
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class RTTEstimator implements Serializable{
+public class RTTEstimator {
   private final LedbatConfig config;
   
   private long rto = -1;

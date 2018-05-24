@@ -4,7 +4,7 @@ import se.sics.kompics.util.Identifiable;
 
 import java.io.Serializable;
 
-public class MyIdentifiable implements Identifiable<MyString>, Serializable {
+public class MyIdentifiable implements Identifiable<MyString> {
 
     MyString id;
 

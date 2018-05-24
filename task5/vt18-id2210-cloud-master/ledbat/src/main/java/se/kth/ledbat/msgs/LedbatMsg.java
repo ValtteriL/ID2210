@@ -28,12 +28,12 @@ import se.kth.ledbat.util.OneWayDelay;
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
-public class LedbatMsg implements Serializable {
+public class LedbatMsg {
   public static interface LedbatConn {
     public Identifier getDataId();
   }
   
-  public static class Data<P extends Identifiable> implements Serializable,PatternExtractor, LedbatConn {
+  public static class Data<P extends Identifiable> implements PatternExtractor, LedbatConn {
 
     public final Identifier dataId;
     public final P data;
@@ -66,7 +66,7 @@ public class LedbatMsg implements Serializable {
 
   }
 
-  public static class Ack implements Identifiable, LedbatConn, Serializable {
+  public static class Ack implements Identifiable, LedbatConn {
 
     public final Identifier eventId;
     public final Identifier dataId;
@@ -91,7 +91,7 @@ public class LedbatMsg implements Serializable {
     }
   }
 
-  public static class BulkAck implements Serializable {
+  public static class BulkAck {
 
     public final Map<Identifier, OneWayDelay> data;
     public final OneWayDelay ack;

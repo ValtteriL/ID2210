@@ -29,7 +29,7 @@ public class Main {
 
     static {
         // register
-        Serializers.register(new JavaSerializer(ClassResolvers.cacheDisabled(ClassLoader.getSystemClassLoader())), "netS");
+        Serializers.register(new NetSerializer(), "netS");
 
         // map
         Serializers.register(BasicAddress.class, "netS");
@@ -37,16 +37,11 @@ public class Main {
         Serializers.register(BasicHeader.class, "netS");
         Serializers.register(MyIdentifiable.class, "netS");
         Serializers.register(MyString.class, "netS");
-        Serializers.register(Serializable.class, "netS");
-        Serializers.register(LedbatMsg.class, "netS");
+//        Serializers.register(LedbatMsg.class, "netS");
         Serializers.register(LedbatMsg.Ack.class, "netS");
-        Serializers.register(LedbatMsg.BulkAck.class, "netS");
+//        Serializers.register(LedbatMsg.BulkAck.class, "netS");
         Serializers.register(LedbatMsg.Data.class, "netS");
-
-        Serializers.register(RTTEstimator.class, "netS");
-        Serializers.register(LedbatConfig.class, "netS");
         Serializers.register(OneWayDelay.class, "netS");
-        Serializers.register(Cwnd.class, "netS");
     }
 
 

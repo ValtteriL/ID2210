@@ -5,7 +5,7 @@ import se.sics.kompics.util.Identifier;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class MyString implements Identifier, Serializable {
+public class MyString implements Identifier {
 
     String id;
 
@@ -35,5 +35,9 @@ public class MyString implements Identifier, Serializable {
     @Override
     public int compareTo(Identifier o) {
         return 0;
+    }
+
+    public String getId() {
+        return id;
     }
 }
