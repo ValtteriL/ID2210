@@ -2,6 +2,8 @@ package se.kth.ledbat.Serialization;
 
 import com.google.common.base.Optional;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.util.ByteProcessor;
 import se.kth.ledbat.Driver.MyIdentifiable;
 import se.kth.ledbat.Driver.MyString;
 import se.kth.ledbat.Ledbat;
@@ -15,10 +17,18 @@ import se.sics.ktoolbox.util.network.basic.BasicAddress;
 import se.sics.ktoolbox.util.network.basic.BasicContentMsg;
 import se.sics.ktoolbox.util.network.basic.BasicHeader;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.GatheringByteChannel;
+import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
+import java.util.concurrent.CountDownLatch;
 
 // This implementation is heavliy inspired by the Kompics tutorial "Basic Networking"
 public class NetSerializer implements Serializer {
@@ -70,7 +80,7 @@ public class NetSerializer implements Serializer {
         } else if (o instanceof MyString) {
             MyString myString = (MyString) o;
             buf.writeByte(MYSTRING);
-            buf.writeBytes(myString.getId().getBytes(Charset.forName("UTF-16")));
+            // buf.writeBytes(myString.getId().getBytes(Charset.forName("UTF-16")));
             // Total = depends on string length
 
         } else if (o instanceof MyIdentifiable) {
@@ -124,7 +134,6 @@ public class NetSerializer implements Serializer {
             case MSG: {
                 BasicHeader header = (BasicHeader) this.fromBinary(buf, Optional.absent());
                 LedbatMsg.Data data = (LedbatMsg.Data) this.fromBinary(buf, Optional.absent());
-                //MyIdentifiable myIdentifiable = (MyIdentifiable) this.fromBinary(buf, Optional.absent());
                 return new BasicContentMsg(header, data);
             }
             case ONEWAYDELAY: { // TODO maybe not supposed to assign values?
@@ -137,11 +146,12 @@ public class NetSerializer implements Serializer {
                 // Total = 17 bytes
             }
             case MYSTRING: {
-                return new MyString(buf.toString(Charset.forName("UTF-16")));
+                // return new MyString(buf.toString(Charset.forName("UTF-16")));
+                return new MyString("KEK");
             }
             case MYIDENTIFIABLE: {
-                MyIdentifiable myIdentifiable = (MyIdentifiable) this.fromBinary(buf, Optional.absent());
-                return myIdentifiable;
+                MyString kekeke = (MyString) this.fromBinary(buf, Optional.absent());
+                return new MyIdentifiable(kekeke.getId());
             }
             case DATA: {
                 MyString myString = (MyString) this.fromBinary(buf, Optional.absent());
