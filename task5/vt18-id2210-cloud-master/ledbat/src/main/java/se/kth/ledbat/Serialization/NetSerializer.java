@@ -160,7 +160,7 @@ public class NetSerializer implements Serializer {
             }
             case MYSTRING: {
                 // return new MyString(buf.toString(Charset.forName("UTF-16")));
-                return new MyString("KEK");
+                return new MyString(buf.toString(Charset.forName("UTF-16")));
             }
             case MYIDENTIFIABLE: {
                 MyString kekeke = (MyString) this.fromBinary(buf, Optional.absent());
