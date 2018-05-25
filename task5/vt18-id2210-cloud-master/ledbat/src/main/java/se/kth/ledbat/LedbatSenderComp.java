@@ -83,23 +83,8 @@ public class LedbatSenderComp extends ComponentDefinition {
     public void handle(Start event) {
       LOG.info("{}starting...", logPrefix);
       scheduleRingTimeout(HardCodedConfig.windowSize);
-      //kek();
     }
   };
-
-  public void kek() {
-    try {
-      handleOutgoingMsg.handle(new BasicContentMsg(
-              new BasicHeader(
-                      new BasicAddress(InetAddress.getByName("127.0.0.1"), 8080, this.senderId),
-                      new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, this.receiverId), Transport.UDP),
-              new MyIdentifiable("some content")
-      ));
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-      System.exit(1);
-    }
-  }
 
   @Override
   public void tearDown() {
@@ -155,8 +140,8 @@ public class LedbatSenderComp extends ComponentDefinition {
   };
 
   private void trySend() {
-    while (!pendingData.isEmpty()) {
-    //while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
+    //while (!pendingData.isEmpty()) {
+    while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
       BasicContentMsg<?, ?, Identifiable> msg = pendingData.removeFirst();
       LOG.trace("{}sending:{}", logPrefix, msg);
       LedbatMsg.Data wrappedData = new LedbatMsg.Data(dataId, msg.extractValue());

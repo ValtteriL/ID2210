@@ -62,9 +62,7 @@ public class NetSerializer implements Serializer {
             buf.writeByte(HEADER); // mark which type we are serializing (1 byte)
             this.toBinary(header.getSource(), buf); // use this serializer again (7 bytes)
             this.toBinary(header.getDestination(), buf); // use this serializer again (7 bytes)
-            //buf.writeByte(header.getProtocol().ordinal()); // 1 byte is enough
-            byte b = 0;
-            buf.writeByte(b); // 1 byte is enough
+            buf.writeByte(header.getProtocol().ordinal()); // 1 byte is enough
             // total = 16 bytes
         } else if (o instanceof BasicContentMsg) {
             BasicContentMsg msg = (BasicContentMsg) o;
@@ -111,8 +109,6 @@ public class NetSerializer implements Serializer {
             this.toBinary(ack.dataDelay, buf);
             this.toBinary(ack.ackDelay, buf);
         }
-        // TODO do we need to fix BulkAck?
-        // TODO check if we should use Identifier instead of MyString. Same with Identifiable and MyIdentifiable
     }
 
     @Override
@@ -135,8 +131,7 @@ public class NetSerializer implements Serializer {
                 BasicAddress src = (BasicAddress) this.fromBinary(buf, Optional.absent()); // We already know what it's going to be (7 bytes)
                 BasicAddress dst = (BasicAddress) this.fromBinary(buf, Optional.absent()); // same here (7 bytes)
                 int protoOrd = buf.readByte(); // 1 byte
-                //Transport proto = Transport.values()[protoOrd];
-                Transport proto = Transport.values()[0];
+                Transport proto = Transport.values()[protoOrd];
                 return new BasicHeader<>(src, dst, proto); // Total = 16 bytes, check
             }
             case DATAMSG: {
