@@ -18,7 +18,6 @@
  */
 package se.kth.ledbat.msgs;
 
-import java.io.Serializable;
 import java.util.Map;
 import se.sics.kompics.PatternExtractor;
 import se.sics.kompics.util.Identifiable;

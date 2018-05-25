@@ -18,8 +18,6 @@
  */
 package se.kth.ledbat.util;
 
-import java.io.Serializable;
-
 /**
  * exact implementation of https://tools.ietf.org/html/rfc6298
  * @author Alex Ormenisan <aaor@kth.se>

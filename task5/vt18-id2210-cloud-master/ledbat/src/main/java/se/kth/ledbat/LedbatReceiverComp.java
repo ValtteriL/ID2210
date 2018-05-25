@@ -73,7 +73,6 @@ public class LedbatReceiverComp extends ComponentDefinition {
       @Override
       public void handle(LedbatMsg.Data payload, BasicContentMsg<?, ?, LedbatMsg.Data> msg) {
         BasicContentMsg baseMsg = new BasicContentMsg(msg.getHeader(), payload.data);
-        System.out.println("Fuck ye");
         trigger(baseMsg, incomingNetworkPort);
         trigger(msg.answer(payload.answer()), outgoingNetworkPort);
       }

@@ -18,7 +18,6 @@
  */
 package se.sics.ktoolbox.util.network.basic;
 
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Objects;

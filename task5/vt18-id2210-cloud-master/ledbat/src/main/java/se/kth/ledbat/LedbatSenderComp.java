@@ -140,7 +140,6 @@ public class LedbatSenderComp extends ComponentDefinition {
   };
 
   private void trySend() {
-    //while (!pendingData.isEmpty()) {
     while (!pendingData.isEmpty() && cwnd.canSend(ledbatConfig.MSS)) {
       BasicContentMsg<?, ?, Identifiable> msg = pendingData.removeFirst();
       LOG.trace("{}sending:{}", logPrefix, msg);

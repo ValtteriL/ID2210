@@ -1,14 +1,12 @@
 package se.kth.ledbat.Driver;
 
 import se.kth.ledbat.LedbatReceiverComp;
-import se.kth.ledbat.LedbatSenderComp;
 import se.sics.kompics.Channel;
 import se.sics.kompics.Component;
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.network.netty.NettyInit;
 import se.sics.kompics.network.netty.NettyNetwork;
-import se.sics.kompics.timer.Timer;
 import se.sics.kompics.timer.java.JavaTimer;
 import se.sics.ktoolbox.util.network.basic.BasicAddress;
 
@@ -24,7 +22,7 @@ public class ReceiverParent extends ComponentDefinition {
             InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
             int port = config().getValue("ledbat.self.port2", Integer.class);
 
-            basicAddr = new BasicAddress(ip, port, new MyString("receiver"));
+            basicAddr = new BasicAddress(ip, port, new MyIdentifier("receiver"));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
@@ -32,9 +30,9 @@ public class ReceiverParent extends ComponentDefinition {
 
         Component receiver = create(LedbatReceiverComp.class,
                 new LedbatReceiverComp.Init(
-                        new MyString("data"), // dataID
-                        new MyString("sender"), // senderID
-                        new MyString("receiver"))); // receiverID
+                        new MyIdentifier("data"), // dataID
+                        new MyIdentifier("sender"), // senderID
+                        new MyIdentifier("receiver"))); // receiverID
         Component network = create(NettyNetwork.class, new NettyInit(basicAddr));
 
         connect(receiver.getNegative(Network.class), network.getPositive(Network.class), Channel.TWO_WAY);

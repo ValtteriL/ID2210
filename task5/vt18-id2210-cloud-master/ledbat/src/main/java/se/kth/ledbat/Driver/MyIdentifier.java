@@ -2,14 +2,13 @@ package se.kth.ledbat.Driver;
 
 import se.sics.kompics.util.Identifier;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class MyString implements Identifier {
+public class MyIdentifier implements Identifier {
 
     String id;
 
-    public MyString(String id) {
+    public MyIdentifier(String id) {
         this.id = id;
     }
 
@@ -17,7 +16,7 @@ public class MyString implements Identifier {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MyString that = (MyString) o;
+        MyIdentifier that = (MyIdentifier) o;
         return Objects.equals(id, that.id);
     }
 

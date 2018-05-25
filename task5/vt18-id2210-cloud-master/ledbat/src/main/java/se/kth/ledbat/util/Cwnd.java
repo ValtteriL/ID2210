@@ -18,7 +18,6 @@
  */
 package se.kth.ledbat.util;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 /**

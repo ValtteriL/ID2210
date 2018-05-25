@@ -5,32 +5,21 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.util.ByteProcessor;
 import se.kth.ledbat.Driver.MyIdentifiable;
-import se.kth.ledbat.Driver.MyString;
-import se.kth.ledbat.Ledbat;
+import se.kth.ledbat.Driver.MyIdentifier;
 import se.kth.ledbat.msgs.LedbatMsg;
 import se.kth.ledbat.util.OneWayDelay;
 import se.sics.kompics.network.Transport;
 import se.sics.kompics.network.netty.serialization.Serializer;
 import se.sics.kompics.network.netty.serialization.Serializers;
-import se.sics.kompics.util.Identifier;
 import se.sics.ktoolbox.util.network.basic.BasicAddress;
 import se.sics.ktoolbox.util.network.basic.BasicContentMsg;
 import se.sics.ktoolbox.util.network.basic.BasicHeader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.channels.GatheringByteChannel;
-import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
-import java.util.concurrent.CountDownLatch;
 
-// This implementation is heavliy inspired by the Kompics tutorial "Basic Networking"
+// This implementation is inspired heavily by the serialization section in the Kompics tutorial "Basic Networking"
 public class NetSerializer implements Serializer {
 
     private static final byte ADDR = 1;
@@ -38,7 +27,7 @@ public class NetSerializer implements Serializer {
     private static final byte DATAMSG = 3;
     private static final byte ACKMSG = 4;
     private static final byte ONEWAYDELAY = 5;
-    private static final byte MYSTRING = 6;
+    private static final byte MYIDENTIFIER = 6;
     private static final byte MYIDENTIFIABLE = 7;
     private static final byte DATA = 8;
     private static final byte ACK = 9;
@@ -83,10 +72,10 @@ public class NetSerializer implements Serializer {
             buf.writeLong(oneWayDelay.send);
             buf.writeLong(oneWayDelay.receive);
             // Total 1+8+8 = 17 bytes
-        } else if (o instanceof MyString) {
-            MyString myString = (MyString) o;
-            buf.writeByte(MYSTRING);
-            // buf.writeBytes(myString.getId().getBytes(Charset.forName("UTF-16")));
+        } else if (o instanceof MyIdentifier) {
+            MyIdentifier myIdentifier = (MyIdentifier) o;
+            buf.writeByte(MYIDENTIFIER);
+            // buf.writeBytes(myIdentifier.getId().getBytes(Charset.forName("UTF-16")));
             // Total = depends on string length
 
         } else if (o instanceof MyIdentifiable) {
@@ -121,8 +110,8 @@ public class NetSerializer implements Serializer {
                 try {
                     InetAddress ip = InetAddress.getByAddress(ipBytes); // 4 bytes
                     int port = buf.readUnsignedShort(); // 2 bytes
-                    MyString myString = (MyString) this.fromBinary(buf, Optional.absent());
-                    return new BasicAddress(ip, port, myString);
+                    MyIdentifier myIdentifier = (MyIdentifier) this.fromBinary(buf, Optional.absent());
+                    return new BasicAddress(ip, port, myIdentifier);
                 } catch (UnknownHostException ex) {
                     throw new RuntimeException(ex); // Let Netty deal with this
                 }
@@ -153,23 +142,23 @@ public class NetSerializer implements Serializer {
                 return oneWayDelay;
                 // Total = 17 bytes
             }
-            case MYSTRING: {
-                // return new MyString(buf.toString(Charset.forName("UTF-16")));
-                return new MyString(buf.toString(Charset.forName("UTF-16")));
+            case MYIDENTIFIER: {
+                // return new MyIdentifier(buf.toString(Charset.forName("UTF-16")));
+                return new MyIdentifier(buf.toString(Charset.forName("UTF-16")));
             }
             case MYIDENTIFIABLE: {
-                MyString kekeke = (MyString) this.fromBinary(buf, Optional.absent());
+                MyIdentifier kekeke = (MyIdentifier) this.fromBinary(buf, Optional.absent());
                 return new MyIdentifiable(kekeke.getId());
             }
             case DATA: {
-                MyString myString = (MyString) this.fromBinary(buf, Optional.absent());
+                MyIdentifier myIdentifier = (MyIdentifier) this.fromBinary(buf, Optional.absent());
                 MyIdentifiable content = (MyIdentifiable) this.fromBinary(buf, Optional.absent());
                 OneWayDelay delay = (OneWayDelay) this.fromBinary(buf, Optional.absent()); // TODO we don't use this
-                return new LedbatMsg.Data(myString, content);
+                return new LedbatMsg.Data(myIdentifier, content);
             }
             case ACK: {
-                MyString eventId = (MyString) this.fromBinary(buf, Optional.absent());
-                MyString dataId = (MyString) this.fromBinary(buf, Optional.absent());
+                MyIdentifier eventId = (MyIdentifier) this.fromBinary(buf, Optional.absent());
+                MyIdentifier dataId = (MyIdentifier) this.fromBinary(buf, Optional.absent());
                 OneWayDelay dataDelay = (OneWayDelay) this.fromBinary(buf, Optional.absent());
                 OneWayDelay ackDelay = (OneWayDelay) this.fromBinary(buf, Optional.absent()); // TODO we don't use this
                 return new LedbatMsg.Ack(eventId, dataId, dataDelay);

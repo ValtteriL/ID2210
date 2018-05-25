@@ -23,8 +23,6 @@ import se.sics.ktoolbox.util.network.KAddress;
 import se.sics.ktoolbox.util.network.KContentMsg;
 import se.sics.ktoolbox.util.network.KHeader;
 
-import java.io.Serializable;
-
 /**
  * @author Alex Ormenisan <aaor@sics.se>
  */

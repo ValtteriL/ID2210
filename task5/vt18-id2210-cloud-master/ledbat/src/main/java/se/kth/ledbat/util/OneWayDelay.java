@@ -18,8 +18,6 @@
  */
 package se.kth.ledbat.util;
 
-import java.io.Serializable;
-
 /**
  * @author Alex Ormenisan <aaor@kth.se>
  */
