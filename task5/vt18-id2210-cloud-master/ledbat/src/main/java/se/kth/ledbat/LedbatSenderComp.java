@@ -83,6 +83,7 @@ public class LedbatSenderComp extends ComponentDefinition {
     public void handle(Start event) {
       LOG.info("{}starting...", logPrefix);
       scheduleRingTimeout(HardCodedConfig.windowSize);
+      System.out.println("dataID: " + dataId.toString());
     }
   };
 
@@ -115,6 +116,7 @@ public class LedbatSenderComp extends ComponentDefinition {
   Handler handleOutgoingMsg = new Handler<BasicContentMsg>() {
     @Override
     public void handle(BasicContentMsg msg) {
+      BasicContentMsg<?,?, Identifiable> msg2 = (BasicContentMsg) msg;
       LOG.trace("{}received:{}", logPrefix, msg);
       pendingData.add((BasicContentMsg) msg);
       trySend();

@@ -28,7 +28,7 @@ public class ReceiverParent extends ComponentDefinition {
             //InetAddress ip = InetAddress.getByName("0.0.0.0");
             //int port = 8081;
 
-            basicAddr = new BasicAddress(ip, port, new MyIdentifier("receiver"));
+            basicAddr = new BasicAddress(ip, port, new MyIdentifier("receiverID"));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
@@ -36,9 +36,9 @@ public class ReceiverParent extends ComponentDefinition {
 
         Component receiver = create(LedbatReceiverComp.class,
                 new LedbatReceiverComp.Init(
-                        new MyIdentifier("data"), // dataID
-                        new MyIdentifier("sender"), // senderID
-                        new MyIdentifier("receiver"))); // receiverID
+                        new MyIdentifier("dataID"), // dataID
+                        new MyIdentifier("senderID"), // senderID
+                        new MyIdentifier("receiverID"))); // receiverID
         Component network = create(NettyNetwork.class, new NettyInit(basicAddr));
 
         connect(receiver.getNegative(Network.class), network.getPositive(Network.class), Channel.TWO_WAY);

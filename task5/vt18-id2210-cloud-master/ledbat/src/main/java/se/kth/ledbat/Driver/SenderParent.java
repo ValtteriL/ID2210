@@ -30,7 +30,7 @@ public class SenderParent extends ComponentDefinition {
             //InetAddress ip = InetAddress.getByName("0.0.0.0");
             //int port = 8080;
 
-            basicAddr = new BasicAddress(ip, port, new MyIdentifier("sender"));
+            basicAddr = new BasicAddress(ip, port, new MyIdentifier("senderID"));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
@@ -38,9 +38,9 @@ public class SenderParent extends ComponentDefinition {
 
         Component ledbatSender = create(LedbatSenderComp.class,
                 new LedbatSenderComp.Init(
-                        new MyIdentifier("data"), // dataID
-                        new MyIdentifier("sender"), // senderID
-                        new MyIdentifier("receiver"))); // receiverID
+                        new MyIdentifier("dataID"), // dataID
+                        new MyIdentifier("senderID"), // senderID
+                        new MyIdentifier("receiverID"))); // receiverID
         Component timer = create(JavaTimer.class, Init.NONE);
         Component network = create(NettyNetwork.class, new NettyInit(basicAddr));
         Component sender = create(Sender.class, Init.NONE);

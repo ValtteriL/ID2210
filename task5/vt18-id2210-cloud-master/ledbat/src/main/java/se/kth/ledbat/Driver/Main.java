@@ -34,11 +34,11 @@ public class Main {
 
             if (args.length == 0) { // Server
 
-                Kompics.createAndStart(ReceiverParent.class, Init.NONE, 3);
+                Kompics.createAndStart(ReceiverParent.class, Init.NONE, 2);
                 System.out.println("Started ReceiverParent...");
             } else if (args.length == 1) { // Client
 
-                Kompics.createAndStart(SenderParent.class, Init.NONE, 3);
+                Kompics.createAndStart(SenderParent.class, Init.NONE, 2);
                 System.out.println("Started SenderParent...");
             } else {
                 System.err.println("Invalid number of parameters");

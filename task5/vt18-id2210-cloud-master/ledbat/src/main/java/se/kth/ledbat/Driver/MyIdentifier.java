@@ -22,7 +22,6 @@ public class MyIdentifier implements Identifier {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 
@@ -33,10 +32,15 @@ public class MyIdentifier implements Identifier {
 
     @Override
     public int compareTo(Identifier o) {
-        return 0;
+        MyIdentifier myO = (MyIdentifier) o;
+        return id.compareTo(myO.id);
     }
 
     public String getId() {
+        return id;
+    }
+
+    public String toString() {
         return id;
     }
 }

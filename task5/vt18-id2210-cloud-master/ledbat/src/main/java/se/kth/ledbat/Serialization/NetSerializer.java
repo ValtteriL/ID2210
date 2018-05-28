@@ -75,7 +75,9 @@ public class NetSerializer implements Serializer {
         } else if (o instanceof MyIdentifier) {
             MyIdentifier myIdentifier = (MyIdentifier) o;
             buf.writeByte(MYIDENTIFIER);
-            // buf.writeBytes(myIdentifier.getId().getBytes(Charset.forName("UTF-16")));
+            byte[] bytes = myIdentifier.getId().getBytes(Charset.forName("UTF-8"));
+            buf.writeInt(bytes.length);
+            buf.writeBytes(bytes);
             // Total = depends on string length
 
         } else if (o instanceof MyIdentifiable) {
@@ -143,8 +145,10 @@ public class NetSerializer implements Serializer {
                 // Total = 17 bytes
             }
             case MYIDENTIFIER: {
-                // return new MyIdentifier(buf.toString(Charset.forName("UTF-16")));
-                return new MyIdentifier(buf.toString(Charset.forName("UTF-16")));
+                int length = buf.readInt();
+                byte[] bytes = new byte[length];
+                buf.readBytes(bytes);
+                return new MyIdentifier(new String(bytes, Charset.forName("UTF-8")));
             }
             case MYIDENTIFIABLE: {
                 MyIdentifier kekeke = (MyIdentifier) this.fromBinary(buf, Optional.absent());

@@ -30,7 +30,7 @@ public class Sender extends ComponentDefinition {
         public void handle(Start event) {
             LOG.info("{}starting...", logPrefix);
 
-            while (true) {
+            //while (true) {
                 try {
                     // Edit the IPs by hand
                     BasicContentMsg msg = new BasicContentMsg(new BasicHeader(
@@ -43,7 +43,7 @@ public class Sender extends ComponentDefinition {
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
-            }
+            //}
         }
     };
 
