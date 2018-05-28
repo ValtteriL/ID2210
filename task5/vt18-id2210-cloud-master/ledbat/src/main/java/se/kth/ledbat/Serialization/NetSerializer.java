@@ -91,14 +91,12 @@ public class NetSerializer implements Serializer {
             buf.writeByte(DATA);
             this.toBinary(data.dataId, buf);
             this.toBinary(data.data, buf);
-            this.toBinary(data.dataDelay, buf);
         } else if (o instanceof LedbatMsg.Ack) {
             LedbatMsg.Ack ack = (LedbatMsg.Ack) o;
             buf.writeByte(ACK);
             this.toBinary(ack.eventId, buf);
             this.toBinary(ack.dataId, buf);
             this.toBinary(ack.dataDelay, buf);
-            this.toBinary(ack.ackDelay, buf);
         }
     }
 
@@ -157,14 +155,12 @@ public class NetSerializer implements Serializer {
             case DATA: {
                 MyIdentifier myIdentifier = (MyIdentifier) this.fromBinary(buf, Optional.absent());
                 MyIdentifiable content = (MyIdentifiable) this.fromBinary(buf, Optional.absent());
-                OneWayDelay delay = (OneWayDelay) this.fromBinary(buf, Optional.absent()); // TODO we don't use this
                 return new LedbatMsg.Data(myIdentifier, content);
             }
             case ACK: {
                 MyIdentifier eventId = (MyIdentifier) this.fromBinary(buf, Optional.absent());
                 MyIdentifier dataId = (MyIdentifier) this.fromBinary(buf, Optional.absent());
                 OneWayDelay dataDelay = (OneWayDelay) this.fromBinary(buf, Optional.absent());
-                OneWayDelay ackDelay = (OneWayDelay) this.fromBinary(buf, Optional.absent()); // TODO we don't use this
                 return new LedbatMsg.Ack(eventId, dataId, dataDelay);
             }
         }
