@@ -19,8 +19,14 @@ public class ReceiverParent extends ComponentDefinition {
 
         BasicAddress basicAddr = null;
         try {
+
             InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
             int port = config().getValue("ledbat.self.port2", Integer.class);
+
+
+            // Hardcoded stuff
+            //InetAddress ip = InetAddress.getByName("0.0.0.0");
+            //int port = 8081;
 
             basicAddr = new BasicAddress(ip, port, new MyIdentifier("receiver"));
         } catch (UnknownHostException e) {

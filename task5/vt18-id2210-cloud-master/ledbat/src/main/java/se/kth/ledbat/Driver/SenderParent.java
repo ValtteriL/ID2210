@@ -21,8 +21,14 @@ public class SenderParent extends ComponentDefinition {
     public SenderParent() {
         BasicAddress basicAddr = null;
         try {
+
             InetAddress ip = InetAddress.getByName(config().getValue("ledbat.self.host", String.class));
             int port = config().getValue("ledbat.self.port1", Integer.class);
+
+
+            // Hardcoded stuff
+            //InetAddress ip = InetAddress.getByName("0.0.0.0");
+            //int port = 8080;
 
             basicAddr = new BasicAddress(ip, port, new MyIdentifier("sender"));
         } catch (UnknownHostException e) {

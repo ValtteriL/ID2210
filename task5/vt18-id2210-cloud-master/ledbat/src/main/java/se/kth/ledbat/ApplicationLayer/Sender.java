@@ -32,7 +32,7 @@ public class Sender extends ComponentDefinition {
 
             while (true) {
                 try {
-                    Thread.sleep(2000);
+                    // Edit the IPs by hand
                     BasicContentMsg msg = new BasicContentMsg(new BasicHeader(
                             new BasicAddress(InetAddress.getByName("127.0.0.1"), 8080, new MyIdentifier("senderID")),
                             new BasicAddress(InetAddress.getByName("127.0.0.1"), 8081, new MyIdentifier("receiverID")),
@@ -40,8 +40,6 @@ public class Sender extends ComponentDefinition {
                             new MyIdentifiable("this is a message"));
                     trigger(msg, ledbatSender);
                     //LOG.debug("Sender sending {}", msg.toString());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
