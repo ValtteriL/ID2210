@@ -46,13 +46,14 @@ public class LedbatReceiverComp extends ComponentDefinition {
   private final Identifier senderId;
   private final Identifier receiverId;
 
-  public LedbatReceiverComp(LedbatSenderComp.Init init) {
+  public LedbatReceiverComp(LedbatReceiverComp.Init init) {
     dataId = init.dataId;
     senderId = init.senderId;
     receiverId = init.receiverId;
     logPrefix = "<" + dataId + "," + senderId + "," + receiverId + ">";
 
     subscribe(handleStart, control);
+    subscribe(handleIncomingMsg, outgoingNetworkPort); //  This might have been a bug
   }
 
   Handler handleStart = new Handler<Start>() {
